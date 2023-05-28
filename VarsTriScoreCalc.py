@@ -185,7 +185,11 @@ win_team_mob_women = det_win_team(oxf_mob_time_women,cam_mob_time_women)
 num_mob_women = min(len(all_teams_women[2]),len(all_teams_women[5]))
 
 #Determine individual results
-all_results_women = sorted(resultsar_women,key=lambda x: x[1])
+all_results_men = sorted(resultsarr_men,key=lambda x: x[1])
+top_3_men = np.hstack(all_results_men)[0:9]
+top_3_data_men = top_3_men.reshape(3,-1)
+
+all_results_women = sorted(resultsarr_women,key=lambda x: x[1])
 top_3_women = np.hstack(all_results_women)[0:9]
 top_3_data_women = top_3_women.reshape(3,-1)
 
