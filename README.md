@@ -1,6 +1,6 @@
 # VarsTriCalcScore
  This is a Python code to calculate Varsity duathlon/triathlon scores.
- The current release is VarsTriCalcScore.v1.0, updated on 15 Feb 2024.
+ The current release is VarsTriCalcScore.v1.1, updated on 15 Feb 2024.
 
 ## How to use the program
 This program is set up as a short code to download on a local computer with a python installation to compute varsity triathlon and duathlon scores.
