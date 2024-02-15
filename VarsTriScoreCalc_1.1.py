@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # coding: utf-8
 
 # # Below is a code for computing the Varsity scores.
@@ -9,10 +9,10 @@ import pandas as pd
 import datetime
 
 # Settings
-dir_excel_men = "test_results_men.xlsx"
-dir_excel_women = "test_results_women.xlsx"
+dir_excel_men = "results_open_duathlon_24.xlsx"
+dir_excel_women = "results_women_duathlon_24.xlsx"
 students_rule = True
-matric_on_tri = True
+matric_on_tri = False
 
 
 #Intro:
@@ -222,11 +222,11 @@ def display_team(results_team):
 #Determine winning teams
 def det_win_team(oxf_time,tab_time):
     if oxf_time > tab_time:
-        return "Cambridge",tab_time
+        return "Cambridge",tab_time,oxf_time,(oxf_time-tab_time)
     if oxf_time < tab_time:
-        return "Oxford",oxf_time
+        return "Oxford",oxf_time,tab_time,(tab_time-oxf_time)
     else:
-        return "Draw",tab_time
+        return "Draw",tab_time,oxf_time,(oxf_time-tab_time)
 
 
 
@@ -251,8 +251,11 @@ cam_mob_time_men = compute_total_time(all_teams_men[5])
 
 oxf_1st_team_men = display_team(all_teams_men[0])
 oxf_2nd_team_men = display_team(all_teams_men[1])
+oxf_mob_team_men = display_team(all_teams_men[2])
 cam_1st_team_men = display_team(all_teams_men[3])
 cam_2nd_team_men = display_team(all_teams_men[4])
+cam_mob_team_men = display_team(all_teams_men[5])
+
 
 
 win_team_1st_men = det_win_team(oxf_1st_time_men,cam_1st_time_men)
@@ -266,6 +269,14 @@ oxford_all_women = extract_oxf(resultsarr_women)
 cambridge_all_women = extract_tab(resultsarr_women)
 all_teams_women = extract_teams(oxford_all_women,cambridge_all_women)
 
+if students_rule:
+    if matric_on_tri:
+        all_teams_women = extract_team_rules_triathlon(oxford_all_women,cambridge_all_women)
+    else:
+        all_teams_women = extract_team_rules_duathlon(oxford_all_women,cambridge_all_women)
+else:
+    all_teams_women = extract_team(oxford_all_women,cambridge_all_women)
+
 oxf_1st_time_women = compute_total_time(all_teams_women[0])
 oxf_2nd_time_women = compute_total_time(all_teams_women[1])
 oxf_mob_time_women = compute_total_time(all_teams_women[2])
@@ -275,8 +286,10 @@ cam_mob_time_women = compute_total_time(all_teams_women[5])
 
 oxf_1st_team_women = display_team(all_teams_women[0])
 oxf_2nd_team_women = display_team(all_teams_women[1])
+oxf_mob_team_women = display_team(all_teams_women[2])
 cam_1st_team_women = display_team(all_teams_women[3])
 cam_2nd_team_women = display_team(all_teams_women[4])
+cam_mob_team_women = display_team(all_teams_women[5])
 
 
 win_team_1st_women = det_win_team(oxf_1st_time_women,cam_1st_time_women)
@@ -315,28 +328,48 @@ print("Now team results.")
 print("")
 print("We begin with the women again.")
 print("We will first announce the results of the Women's First team.")
-print("With a total winning time of",display_timedelta(win_team_1st_women[1]),"the team that won Men's First is",win_team_1st_women[0],"!")
+print("With a total winning time of",display_timedelta(win_team_1st_women[1]),"the team that won Women's First is",win_team_1st_women[0],"!")
 print("The members of their team are:")
 if win_team_1st_women[0]=='Cambridge':
     print(cam_1st_team_women)
     print("The Oxford team members are:",oxf_1st_team_women)
+    print("Their finishing time was",display_timedelta(win_team_1st_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_1st_women[3]),".")
 if win_team_1st_women[0]=='Oxford':
     print(oxf_1st_team_women)
     print("The Cambridge team members are:",cam_1st_team_women)
+    print("Their finishing time was",display_timedelta(win_team_1st_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_1st_women[3]),".")
 print("")
 print("Now for Women's Second team.")
-print("With a total winning time of",display_timedelta(win_team_2nd_women[1]),"the team that won Men's Second is",win_team_2nd_women[0],"!")
+print("With a total winning time of",display_timedelta(win_team_2nd_women[1]),"the team that won Women's Second is",win_team_2nd_women[0],"!")
 print("The members of their team are:")
-if win_team_1st_women[0]=='Cambridge':
+if win_team_2nd_women[0]=='Cambridge':
     print(cam_2nd_team_women)
     print("The Oxford team members are:",oxf_2nd_team_women)
-if win_team_1st_women[0]=='Oxford':
+    print("Their finishing time was",display_timedelta(win_team_2nd_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_2nd_women[3]),".")
+if win_team_2nd_women[0]=='Oxford':
     print(oxf_2nd_team_women)
     print("The Cambridge team members are:",cam_2nd_team_women)
+    print("Their finishing time was",display_timedelta(win_team_2nd_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_2nd_women[3]),".")
 print("")
 print("Now for Women's mob team...")
 print("The number of mobs counted is:",num_mob_women,".")
-print("With a total winning time of",display_timedelta(win_team_mob_women[1]),"the team that won Men's Mob is",win_team_mob_women[0],"!")
+print("With a total winning time of",display_timedelta(win_team_mob_women[1]),"the team that won Women's Mob is",win_team_mob_women[0],"!")
+print("The members of their team are:")
+if win_team_mob_women[0]=='Cambridge':
+    print(cam_mob_team_women)
+    print("The Oxford team members are:",oxf_mob_team_women)
+    print("Their finishing time was",display_timedelta(win_team_mob_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_mob_women[3]),".")
+if win_team_mob_women[0]=='Oxford':
+    print(oxf_mob_team_women)
+    print("The Cambridge team members are:",cam_mob_team_women)
+    print("Their finishing time was",display_timedelta(win_team_mob_women[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_mob_women[3]),".")
+print("")
 print("")
 print("Now for the men!")
 print("We will first announce the results of the Men's First team.")
@@ -345,22 +378,42 @@ print("The members of their team are:")
 if win_team_1st_men[0]=='Cambridge':
     print(cam_1st_team_men)
     print("The Oxford team members are:",oxf_1st_team_men)
+    print("Their finishing time was",display_timedelta(win_team_1st_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_1st_men[3]),".")
 if win_team_1st_men[0]=='Oxford':
     print(oxf_1st_team_men)
     print("The Cambridge team members are:",cam_1st_team_men)
+    print("Their finishing time was",display_timedelta(win_team_1st_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_1st_men[3]),".")
 print("")
 print("Now for Men's Second team.")
 print("With a total winning time of",display_timedelta(win_team_2nd_men[1]),"the team that won Men's Second is",win_team_2nd_men[0],"!")
 print("The members of their team are:")
-if win_team_1st_men[0]=='Cambridge':
+if win_team_2nd_men[0]=='Cambridge':
     print(cam_2nd_team_men)
     print("The Oxford team members are:",oxf_2nd_team_men)
-if win_team_1st_men[0]=='Oxford':
+    print("Their finishing time was",display_timedelta(win_team_2nd_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_2nd_men[3]),".")
+if win_team_2nd_men[0]=='Oxford':
     print(oxf_2nd_team_men)
     print("The Cambridge team members are:",cam_2nd_team_men)
+    print("Their finishing time was",display_timedelta(win_team_2nd_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_2nd_men[3]),".")
 print("")
 print("Now for Men's mob team...")
-print("The number of mobs counted is:",num_mob_women,".")
+print("The number of mobs counted is:",num_mob_men,".")
 print("With a total winning time of",display_timedelta(win_team_mob_men[1]),"the team that won Men's Mob is",win_team_mob_men[0],"!")
+print("The members of their team are:")
+if win_team_mob_men[0]=='Cambridge':
+    print(cam_mob_team_men)
+    print("The Oxford team members are:",oxf_mob_team_men)
+    print("Their finishing time was",display_timedelta(win_team_mob_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_mob_men[3]),".")
+if win_team_mob_men[0]=='Oxford':
+    print(oxf_mob_team_men)
+    print("The Cambridge team members are:",cam_mob_team_men)
+    print("Their finishing time was",display_timedelta(win_team_mob_men[2]),".")
+    print("The time difference between the two teams was",display_timedelta(win_team_mob_men[3]),".")
 print("")
-print("This is it! Thank you for using VarsTriScoreCalc.v1.0!")
+print("")
+print("This is it! Thank you for using VarsTriScoreCalc.v1.2!")
