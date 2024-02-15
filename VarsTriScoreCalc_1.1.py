@@ -416,4 +416,4 @@ if win_team_mob_men[0]=='Oxford':
     print("The time difference between the two teams was",display_timedelta(win_team_mob_men[3]),".")
 print("")
 print("")
-print("This is it! Thank you for using VarsTriScoreCalc.v1.2!")
+print("This is it! Thank you for using VarsTriScoreCalc.v1.1!")
