@@ -48,7 +48,26 @@ df_women = pd.read_excel(dir_excel_women)
 resultsarr_men = np.asarray(df_men)
 resultsarr_women = np.asarray(df_women)
 
+# Define extract functions
+def extract_all_open(results_array):
+    openarrayboo = []
+    catarr = results_array[:,5]
+    for element in catarr:
+        if element == 'Open':
+            openarrayboo.append(True)
+        else:
+            openarrayboo.append(False)
+    return results_array[openarrayboo]
 
+def extract_all_women(results_array):
+    openarrayboo = []
+    catarr = results_array[:,5]
+    for element in catarr:
+        if element == 'Women':
+            openarrayboo.append(True)
+        else:
+            openarrayboo.append(False)
+    return results_array[openarrayboo]
 
 # Define extract functions
 def extract_oxf(results_array):
